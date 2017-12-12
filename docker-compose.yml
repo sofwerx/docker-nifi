@@ -1,5 +1,26 @@
-nifi:
-  build: .
-  ports:
-    - 8080:8080
-    - 8181:8181
+version: '3.3'
+
+volumes:
+
+  database_repository:
+    driver: local
+  flowfile_repository:
+    driver: local
+  content_repository:
+    driver: local
+  provenance_repository:
+    driver: local
+
+services:
+
+  nifi:
+    build: .
+    ports:
+      - 8080:8080
+      - 8181:8181
+    volumes:
+      - database_repository:/opt/nifi/nifi-1.4.0/database_repository
+      - flowfile_repository:/opt/nifi/nifi-1.4.0/flowfile_repository
+      - content_repository:/opt/nifi/nifi-1.4.0/content_repository
+      - provenance_repository:/opt/nifi/nifi-1.4.0/provenance_repository
+

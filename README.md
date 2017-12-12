@@ -10,3 +10,7 @@ https://nifi.apache.org/
 
 Then open a browser to port 8080.
 
+- http://localhost:8080/nifi/
+
+Note: You may need to replace "localhost" with the IP of your docker engine host.
+

@@ -40,7 +40,22 @@ RUN curl -fSL $NIFI_BINARY_URL -o $NIFI_BASE_DIR/nifi-$NIFI_VERSION-bin.tar.gz \
     && tar -xvzf $NIFI_BASE_DIR/nifi-$NIFI_VERSION-bin.tar.gz -C $NIFI_BASE_DIR \
     && rm $NIFI_BASE_DIR/nifi-$NIFI_VERSION-bin.tar.gz
 
+RUN find /opt/nifi/nifi-1.4.0/ -name '*.sh'
+
+RUN bash -c "mkdir -p $NIFI_HOME/{database_repository,flowfile_repository,content_repository,provenance_repository}"
+
 RUN chown -R nifi:nifi $NIFI_HOME
+
+# These are the volumes (in order) for the following:
+# 1) user access and flow controller history
+# 2) FlowFile attributes and current state in the system
+# 3) content for all the FlowFiles in the system
+# 4) information related to Data Provenance
+# You can find more information about the system properties here - https://nifi.apache.org/docs/nifi-docs/html/administration-guide.html#system_properties
+VOLUME ["$NIFI_HOME/database_repository", \
+        "$NIFI_HOME/flowfile_repository", \
+        "$NIFI_HOME/content_repository", \
+        "$NIFI_HOME/provenance_repository"]
 
 # Web HTTP Port
 EXPOSE 8080
